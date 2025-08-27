@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>超炫视觉特效空间</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Rajdhani', 'Orbitron', sans-serif;
+        }
+        
+        :root {
+            --primary: #00f3ff;
+            --secondary: #ff00c8;
+            --accent: #ff5400;
+            --dark: #0a0a1a;
+            --light: #ffffff;
+        }
+        
+        body {
+            background: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+            min-height: 100vh;
+            perspective: 1000px;
+        }
+        
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        
+        .laser-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0.7;
+        }
+        
+        .laser {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            box-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary);
+            animation: laserScan 5s linear infinite;
+            transform-origin: center;
+        }
+        
+        @keyframes laserScan {
+            0% { transform: rotate(0deg) translateX(-100vh); }
+            100% { transform: rotate(360deg) translateX(-100vh); }
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            position: relative;
+        }
+        
+        .logo {
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { text-shadow: 0 0 15px rgba(0, 243, 255, 0.5); }
+            50% { text-shadow: 0 0 25px rgba(0, 243, 255, 0.8), 0 0 35px rgba(0, 243, 255, 0.6); }
+            100% { text-shadow: 0 0 15px rgba(0, 243, 255, 0.5); }
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav li {
+            margin-left: 30px;
+        }
+        
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            color: var(--primary);
+        }
+        
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.4), transparent);
+            transition: all 0.6s ease;
+        }
+        
+        nav a:hover::before {
+            left: 100%;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 150px 0 100px;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+        
+        h1 {
+            font-size: 5.5rem;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+            animation: fadeIn 1.5s ease, float 6s infinite ease-in-out;
+            letter-spacing: 2px;
+        }
+        
+        .hero p {
+            font-size: 1.8rem;
+            max-width: 800px;
+            margin: 0 auto 60px;
+            animation: fadeIn 2s ease;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotateX(0) rotateY(0); }
+            33% { transform: translateY(-20px) rotateX(5deg) rotateY(5deg); }
+            66% { transform: translateY(10px) rotateX(-5deg) rotateY(-5deg); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(50px) rotateX(20deg); }
+            to { opacity: 1; transform: translateY(0) rotateX(0); }
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 18px 50px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 50px;
+            margin: 0 20px;
+            transition: all 0.4s ease;
+            animation: bounce 3s infinite;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+            border: none;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .btn:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            animation: none;
+            color: white;
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+        }
+        
+        .btn:hover::after {
+            transform: translateX(100%);
+            transition: transform 0.6s ease;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 3px solid var(--primary);
+            color: var(--primary);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.3), inset 0 0 20px rgba(0, 243, 255, 0.1);
+        }
+        
+        .btn-outline:hover {
+            background: rgba(0, 243, 255, 0.1);
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+        
+        /* 磨砂玻璃效果卡片 */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+            pointer-events: none;
+        }
+        
+        /* 镭射卡片效果 */
+        .laser-card {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .laser-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: laserSweep 3s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes laserSweep {
+            0% { transform: translate(-100%, -100%) rotate(45deg); }
+            100% { transform: translate(100%, 100%) rotate(45deg); }
+        }
+        
+        .parallax-container {
+            position: relative;
+            margin: 150px 0;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            min-height: 600px;
+            overflow: hidden;
+        }
+        
+        .parallax-layer {
+            position: absolute;
+            width: 110%;
+            left: -5%;
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            transform-style: preserve-3d;
+        }
+        
+        .layer-1 {
+            background-image: url('https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+            transform: translateZ(-300px) scale(4);
+            z-index: 1;
+        }
+        
+        .layer-2 {
+            background-image: url('https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+            transform: translateZ(-150px) scale(2.5);
+            z-index: 2;
+        }
+        
+        .layer-3 {
+            background-image: url('https://images.unsplash.com/photo-1563089145-599997674d42?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+            transform: translateZ(0px) scale(1);
+            z-index: 3;
+        }
+        
+        .layer-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 4;
+            color: white;
+            width: 80%;
+        }
+        
+        .layer-content h2 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+        }
+        
+        .layer-content p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+            text-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+        }
+        
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 120px 0;
+            transform-style: preserve-3d;
+        }
+        
+        .feature-card {
+            width: 30%;
+            background: rgba(10, 10, 26, 0.7);
+            backdrop-filter: blur(12px);
+            padding: 40px 30px;
+            border-radius: 25px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            transition: all 0.5s ease;
+            transform-style: preserve-3d;
+            border: 1px solid rgba(0, 243, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            z-index: -1;
+            background: linear-gradient(45deg, var(--primary), var(--secondary), transparent);
+            border-radius: 25px;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-20px) rotateY(5deg) rotateX(5deg) scale(1.03);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        }
+        
+        .feature-card i {
+            font-size: 3.5rem;
+            margin-bottom: 25px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.5));
+        }
+        
+        .feature-card h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 100px 0;
+            transform-style: preserve-3d;
+        }
+        
+        .gallery-item {
+            height: 280px;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            transition: all 0.6s ease;
+            transform: translateZ(20px);
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.08) rotate(3deg) translateZ(30px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.6s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.2);
+        }
+        
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background: linear-gradient(transparent, rgba(10, 10, 26, 0.9));
+        }
+        
+        .gallery-item .caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 25px;
+            z-index: 20;
+            transform: translateY(10px);
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+        
+        .gallery-item:hover .caption {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .gallery-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .gallery-item p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .parallax-wrapper {
+            margin: 150px 0;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+        
+        .parallax-box {
+            background: linear-gradient(45deg, rgba(0, 243, 255, 0.1), rgba(255, 0, 200, 0.1));
+            border-radius: 30px;
+            padding: 80px;
+            text-align: center;
+            transform-style: preserve-3d;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .parallax-box h2 {
+            font-size: 3.5rem;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transform: translateZ(40px);
+        }
+        
+        .parallax-box p {
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.7;
+            transform: translateZ(20px);
+        }
+        
+        /* 鼠标文字环绕效果 */
+        .text-circle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+            font-size: 12px;
+            color: var(--primary);
+            text-transform: uppercase;
+            font-weight: bold;
+            text-shadow: 0 0 5px var(--primary);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        /* 动态炫光效果 */
+        .glow-effect {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            opacity: 0.1;
+            filter: blur(40px);
+            pointer-events: none;
+            z-index: 1;
+            animation: glowMove 15s infinite alternate;
+        }
+        
+        .glow-effect:nth-child(2) {
+            background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
+            width: 500px;
+            height: 500px;
+            animation-delay: 2s;
+            animation-duration: 20s;
+        }
+        
+        .glow-effect:nth-child(3) {
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            width: 400px;
+            height: 400px;
+            animation-delay: 5s;
+            animation-duration: 25s;
+        }
+        
+        @keyframes glowMove {
+            0% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(200px, 100px) scale(1.2); }
+            50% { transform: translate(-100px, 200px) scale(0.8); }
+            75% { transform: translate(-200px, -100px) scale(1.1); }
+            100% { transform: translate(100px, -200px) scale(0.9); }
+        }
+        
+        .mouse-trail {
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(0, 243, 255, 0.5);
+            box-shadow: 0 0 20px var(--primary), 0 0 40px var(--primary);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            mix-blend-mode: screen;
+            z-index: 9999;
+            animation: trail 0.5s linear forwards;
+        }
+        
+        @keyframes trail {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+        }
+        
+        footer {
+            text-align: center;
+            padding: 80px 0 40px;
+            margin-top: 150px;
+            background: rgba(5, 5, 15, 0.7);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            box-shadow: 0 0 20px var(--primary), 0 0 40px var(--primary);
+        }
+        
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+        }
+        
+        .social-icons a {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            margin: 0 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .social-icons a:hover {
+            transform: translateY(-10px) scale(1.1) rotate(10deg);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .social-icons a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: -1;
+        }
+        
+        .social-icons a:hover::before {
+            opacity: 0.2;
+        }
+        
+        .social-icons i {
+            font-size: 1.8rem;
+            color: var(--light);
+            transition: all 0.4s ease;
+        }
+        
+        .social-icons a:hover i {
+            color: var(--primary);
+            filter: drop-shadow(0 0 10px var(--primary));
+        }
+        
+        .neon-text {
+            animation: neon 1.5s ease-in-out infinite alternate;
+            color: #fff;
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px var(--primary), 0 0 30px var(--primary), 0 0 40px var(--primary);
+        }
+        
+        @keyframes neon {
+            from {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--primary), 0 0 20px var(--primary), 0 0 25px var(--primary);
+            }
+            to {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--primary), 0 0 40px var(--primary), 0 0 50px var(--primary);
+            }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1100px) {
+            .feature-card {
+                width: 48%;
+            }
+            
+            h1 {
+                font-size: 4rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .feature-card {
+                width: 100%;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav li {
+                margin: 8px;
+            }
+            
+            h1 {
+                font-size: 3rem;
+            }
+            
+            .hero p {
+                font-size: 1.3rem;
+            }
+            
+            .btn {
+                padding: 15px 30px;
+                margin: 10px;
+            }
+            
+            .parallax-box {
+                padding: 40px 20px;
+            }
+            
+            .parallax-box h2 {
+                font-size: 2.5rem;
+            }
+            
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <div class="laser-overlay" id="laserOverlay"></div>
+    
+    <!-- 动态炫光效果 -->
+    <div class="glow-effect" style="top: 20%; left: 10%;"></div>
+    <div class="glow-effect" style="top: 60%; left: 80%;"></div>
+    <div class="glow-effect" style="top: 80%; left: 30%;"></div>
+    
+    <div class="container">
+        <header>
+            <div class="logo neon-text">CYBERX</div>
+            <nav>
+                <ul>
+                    <li><a href="#">首页</a></li>
+                    <li><a href="#">功能</a></li>
+                    <li><a href="#">画廊</a></li>
+                    <li><a href="#">关于</a></li>
+                    <li><a href="#">联系</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <section class="hero">
+            <h1>未来已来</h1>
+            <p>探索数字世界的无限可能，体验前所未有的视觉盛宴，感受科技与艺术的完美融合。</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn">开始旅程</a>
+                <a href="#" class="btn btn-outline">探索更多</a>
+            </div>
+        </section>
+        
+        <!-- 磨砂玻璃效果卡片 -->
+        <section class="features">
+            <div class="feature-card glass-card laser-card">
+                <i class="fas fa-globe"></i>
+                <h3>沉浸式体验</h3>
+                <p>借助最先进的WebGL和3D技术，我们创造了完全沉浸式的浏览体验，让用户感受数字世界的魅力。</p>
+            </div>
+            <div class="feature-card glass-card laser-card">
+                <i class="fas fa-bolt"></i>
+                <h3>极致性能</h3>
+                <p>优化每一行代码，确保网站在所有设备上都能流畅运行，提供无缝的交互体验。</p>
+            </div>
+            <div class="feature-card glass-card laser-card">
+                <i class="fas fa-magic"></i>
+                <h3>动态效果</h3>
+                <p>从微妙的过渡到华丽的动画，每一个细节都经过精心设计，为用户带来愉悦的视觉享受。</p>
+            </div>
+        </section>
+        
+        <div class="parallax-container" id="parallaxContainer">
+            <div class="parallax-layer layer-1"></div>
+            <div class="parallax-layer layer-2"></div>
+            <div class="parallax-layer layer-3"></div>
+            <div class="layer-content">
+                <h2>深度沉浸体验</h2>
+                <p>通过多层视差效果，创造出身临其境的视觉体验，感受数字世界的深度与广度。</p>
+            </div>
+        </div>
+        
+        <section class="gallery">
+            <div class="gallery-item glass-card">
+                <img src="https://images.unsplash.com/photo-1677442135135-416f8aa26a5b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="未来科技">
+                <div class="caption">
+                    <h3>数字艺术</h3>
+                    <p>算法生成的视觉艺术作品</p>
+                </div>
+            </div>
+            <div class="gallery-item glass-card">
+                <img src="https://images.unsplash.com/photo-1677442136018-7bb0d0c10cc5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="虚拟现实">
+                <div class="caption">
+                    <h3>虚拟现实</h3>
+                    <p>沉浸式VR体验新维度</p>
+                </div>
+            </div>
+            <div class="gallery-item glass-card">
+                <img src="https://images.unsplash.com/photo-1677442134956-4dc5db3a0a94?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="神经网络">
+                <div class="caption">
+                    <h3>人工智能</h3>
+                    <p>神经网络与深度学习</p>
+                </div>
+            </div>
+        </section>
+        
+        <div class="parallax-wrapper">
+            <div class="parallax-box glass-card">
+                <h2>无限可能</h2>
+                <p>在这个数字时代，创意与技术的结合创造了前所未有的可能性。我们致力于探索前沿技术，打造令人惊叹的视觉体验，让每个用户都能感受到科技的魅力。</p>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+            <p>&copy; 2023 CYBERX - 未来科技体验</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // 初始化粒子效果
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 120, density: { enable: true, value_area: 1000 } },
+                color: { value: "#00f3ff" },
+                shape: { 
+                    type: "circle",
+                    stroke: { width: 0, color: "#000000" },
+                    polygon: { nb_sides: 5 }
+                },
+                opacity: { 
+                    value: 0.5, 
+                    random: true,
+                    anim: { enable: true, speed: 1, opacity_min: 0.1, sync: false }
+                },
+                size: { 
+                    value: 3, 
+                    random: true,
+                    anim: { enable: true, speed: 2, size_min: 0.1, sync: false }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#00f3ff",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 3,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false,
+                    attract: { enable: true, rotateX: 600, rotateY: 1200 }
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "grab" },
+                    onclick: { enable: true, mode: "push" },
+                    resize: true
+                },
+                modes: {
+                    grab: { distance: 200, line_linked: { opacity: 1 } },
+                    push: { particles_nb: 4 }
+                }
+            },
+            retina_detect: true
+        });
+        
+        // 创建镭射效果
+        function createLasers() {
+            const overlay = document.getElementById('laserOverlay');
+            const colors = ['#00f3ff', '#ff00c8', '#ff5400', '#39ff14'];
+            
+            for (let i = 0; i < 4; i++) {
+                const laser = document.createElement('div');
+                laser.className = 'laser';
+                laser.style.top = Math.random() * 100 + 'vh';
+                laser.style.background = `linear-gradient(90deg, transparent, ${colors[i]}, transparent)`;
+                laser.style.boxShadow = `0 0 10px ${colors[i]}, 0 0 20px ${colors[i]}`;
+                laser.style.animationDuration = (3 + Math.random() * 7) + 's';
+                laser.style.animationDelay = (Math.random() * 5) + 's';
+                overlay.appendChild(laser);
+            }
+        }
+        
+        // 鼠标文字环绕效果
+        function createTextCircle(x, y) {
+            const texts = ["未来", "科技", "创新", "设计", "视觉", "特效", "炫酷", "动态"];
+            const count = 8;
+            
+            for (let i = 0; i < count; i++) {
+                const angle = (i * (360 / count)) * (Math.PI / 180);
+                const radius = 80;
+                
+                const textEl = document.createElement('div');
+                textEl.className = 'text-circle';
+                textEl.textContent = texts[i];
+                textEl.style.left = (x + Math.cos(angle) * radius) + 'px';
+                textEl.style.top = (y + Math.sin(angle) * radius) + 'px';
+                textEl.style.opacity = '1';
+                
+                document.body.appendChild(textEl);
+                
+                setTimeout(() => {
+                    textEl.style.opacity = '0';
+                    setTimeout(() => {
+                        document.body.removeChild(textEl);
+                    }, 300);
+                }, 1000);
+            }
+        }
+        
+        // 添加鼠标轨迹效果
+        document.addEventListener('mousemove', function(e) {
+            const trail = document.createElement('div');
+            trail.className = 'mouse-trail';
+            trail.style.left = e.pageX + 'px';
+            trail.style.top = e.pageY + 'px';
+            document.body.appendChild(trail);
+            
+            setTimeout(() => {
+                trail.remove();
+            }, 500);
+            
+            // 每隔一段时间创建文字环绕效果
+            if (Math.random() > 0.9) {
+                createTextCircle(e.pageX, e.pageY);
+            }
+        });
+        
+        // 添加视差滚动效果
+        document.addEventListener('scroll', function() {
+            const scrollY = window.scrollY;
+            const hero = document.querySelector('.hero');
+            const features = document.querySelector('.features');
+            const parallaxBox = document.querySelector('.parallax-box');
+            const parallaxContainer = document.getElementById('parallaxContainer');
+            const layers = document.querySelectorAll('.parallax-layer');
+            
+            if (hero) {
+                hero.style.transform = `translateY(${scrollY * 0.2}px) rotateX(${scrollY * 0.03}deg)`;
+            }
+            
+            if (features) {
+                features.style.transform = `translateY(${scrollY * 0.1}px)`;
+            }
+            
+            if (parallaxBox) {
+                parallaxBox.style.transform = `translateZ(${scrollY * 0.05}px) rotateX(${scrollY * 0.01}deg)`;
+            }
+            
+            if (parallaxContainer) {
+                const rect = parallaxContainer.getBoundingClientRect();
+                const offset = window.innerHeight - rect.top;
+                
+                if (offset > 0 && offset < window.innerHeight + rect.height) {
+                    layers.forEach((layer, index) => {
+                        const speed = 0.5 + (index * 0.1);
+                        layer.style.transform = `translateY(${offset * speed}px) translateZ(${-150 * index}px) scale(${1 + index * 0.5})`;
+                    });
+                }
+            }
+        });
+        
+        // 添加滚动动画效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const featureCards = document.querySelectorAll('.feature-card');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            
+            function checkScroll() {
+                featureCards.forEach(card => {
+                    const cardPosition = card.getBoundingClientRect().top;
+                    const screenPosition = window.innerHeight / 1.3;
+                    
+                    if (cardPosition < screenPosition) {
+                        card.style.opacity = 1;
+                        card.style.transform = 'translateY(0) rotateY(0) rotateX(0) scale(1)';
+                    }
+                });
+                
+                galleryItems.forEach(item => {
+                    const itemPosition = item.getBoundingClientRect().top;
+                    const screenPosition = window.innerHeight / 1.3;
+                    
+                    if (itemPosition < screenPosition) {
+                        item.style.opacity = 1;
+                        item.style.transform = 'translateZ(20px)';
+                    }
+                });
+            }
+            
+            // 初始设置
+            featureCards.forEach(card => {
+                card.style.opacity = 0;
+                card.style.transform = 'translateY(100px) rotateY(20deg) rotateX(20deg) scale(0.9)';
+                card.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            });
+            
+            galleryItems.forEach(item => {
+                item.style.opacity = 0;
+                item.style.transform = 'translateZ(0)';
+                item.style.transition = 'all 0.8s ease';
+            });
+            
+            window.addEventListener('scroll', checkScroll);
+            checkScroll(); // 初始检查
+            
+            // 创建镭射效果
+            createLasers();
+        });
+    </script>
+</body>
+</html>
