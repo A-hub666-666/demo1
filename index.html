@@ -17,7 +17,7 @@
             background: linear-gradient(135deg, #0a0a2a 0%, #1a0038 50%, #0a0a2a 100%);
             color: #fff;
             min-height: 100vh;
-            overflow: hidden;
+            overflow-x: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -345,7 +345,6 @@
         <div class="interactive-section">
             <button class="magic-button" id="starWish">点亮星空</button>
             <button class="magic-button" id="createStar">心形绽放</button>
-            <button class="magic-button" id="specialMessage">爱的旋律</button>
         </div>
     </div>
 
@@ -629,68 +628,6 @@
             }
         }
         
-        // 爱的旋律效果
-        function setupSpecialMessage() {
-            const button = document.getElementById('specialMessage');
-            
-            button.addEventListener('click', function() {
-                // 创建音乐波纹效果
-                createMusicRipples();
-            });
-        }
-        
-        // 创建音乐波纹效果
-        function createMusicRipples() {
-            const canvas = document.getElementById('wishCanvas');
-            const ctx = canvas.getContext('2d');
-            
-            let circles = [];
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-            
-            // 创建多个波纹圈
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    circles.push({
-                        x: centerX,
-                        y: centerY,
-                        radius: 0,
-                        color: `hsl(${Math.random() * 360}, 100%, 70%)`,
-                        lineWidth: 2,
-                        speed: 2 + Math.random() * 2
-                    });
-                }, i * 300);
-            }
-            
-            // 动画函数
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                for (let i = 0; i < circles.length; i++) {
-                    const circle = circles[i];
-                    circle.radius += circle.speed;
-                    
-                    ctx.beginPath();
-                    ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
-                    ctx.strokeStyle = circle.color;
-                    ctx.lineWidth = circle.lineWidth;
-                    ctx.stroke();
-                    
-                    // 移除超出屏幕的圆圈
-                    if (circle.radius > Math.max(canvas.width, canvas.height) * 0.8) {
-                        circles.splice(i, 1);
-                        i--;
-                    }
-                }
-                
-                if (circles.length > 0) {
-                    requestAnimationFrame(animate);
-                }
-            }
-            
-            animate();
-        }
-        
         // 初始化
         window.onload = function() {
             createBackgroundBubbles();
@@ -699,7 +636,6 @@
             createFloatingElements();
             setupStarWish();
             setupCreateStar();
-            setupSpecialMessage();
         };
     </script>
 </body>
